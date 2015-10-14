@@ -1,24 +1,30 @@
 import './index';
 
-describe('Service: token', function () {
-  var token, $cookies, $httpBackend, $interval, requestHandler, cookiesMock;
-  var jwtHelperMock = {
-    getTokenExpirationDate: sinon.stub()
-  };
+describe('Service: token', () => {
+  let token,
+    $cookies,
+    $httpBackend,
+    $interval,
+    requestHandler,
+    cookiesMock,
+    jwtHelperMock = {
+      getTokenExpirationDate: sinon.stub()
+    };
 
-  beforeEach(function () {
+  beforeEach(() => {
     cookiesMock = {
       get: sinon.stub(),
       put: sinon.stub()
     };
-    angular.mock.module('hcsutil.services');
-    angular.mock.module(function ($provide) {
+
+    angular.mock.module('app.services');
+    angular.mock.module($provide => {
       $provide.value('$cookies', cookiesMock);
       $provide.value('jwtHelper', jwtHelperMock);
       $provide.value('API_URL', 'http://localhost:3000');
     });
 
-    inject(function ($injector, _$interval_, _$cookies_) {
+    inject(($injector, _$interval_, _$cookies_) => {
       $cookies = _$cookies_;
       $httpBackend = $injector.get('$httpBackend');
       requestHandler = $httpBackend.when('POST', 'http://localhost:3000/token')
@@ -30,43 +36,43 @@ describe('Service: token', function () {
     cookiesMock.get.returns('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL3NhbXBsZXMuYXV0aDAuY29tLyIsInN1YiI6ImZhY2Vib29rfDEwMTU0Mjg3MDI3NTEwMzAyIiwiYXVkIjoiQlVJSlNXOXg2MHNJSEJ3OEtkOUVtQ2JqOGVESUZ4REMiLCJleHAiOjE0MTIyMzQ3MzAsImlhdCI6MTQxMjE5ODczMH0.7M5sAV50fF1-_h9qVbdSgqAnXVF7mz3I6RjS6JiH0H8');
   });
 
-  describe('Defaults', function () {
-    it('will return false before token is updated', function () {
+  describe('Defaults', () => {
+    it('will return false before token is updated', () => {
       expect(token.isExpiring).toBe(false);
     });
   });
 
-  describe('Not Expired', function () {
-    beforeEach(function () {
+  describe('Not Expired', () => {
+    beforeEach(() => {
       var tokenExpirationDate = new Date();
       tokenExpirationDate.setMinutes(tokenExpirationDate.getMinutes() + 20);
 
       jwtHelperMock.getTokenExpirationDate.returns(tokenExpirationDate);
     });
 
-    it('will return false if token time is above 15 minutes from expiration', function () {
+    it('will return false if token time is above 15 minutes from expiration', () => {
       $interval.flush(60000);
 
       expect(token.isExpiring).toBe(false);
     });
   });
 
-  describe('Expiring Token', function () {
-    beforeEach(function () {
+  describe('Expiring Token', () => {
+    beforeEach(() => {
       var tokenExpirationDate = new Date();
       tokenExpirationDate.setMinutes(tokenExpirationDate.getMinutes() + 11);
 
       jwtHelperMock.getTokenExpirationDate.returns(tokenExpirationDate);
     });
 
-    it('will return truthy isExpiring flag if token is within 15 minutes from expiration', function () {
+    it('will return truthy isExpiring flag if token is within 15 minutes from expiration', () => {
       $interval.flush(60000);
 
       expect(token.isExpiring).toBe(true);
     });
   });
 
-  describe('Renew Token', function () {
+  describe('Renew Token', () => {
 
     it('will set a new cookie with the refreshed token', () => {
       $httpBackend.expectPOST('http://localhost:3000/token');
@@ -132,7 +138,7 @@ describe('Service: token', function () {
 
   });
 
-  afterEach(function () {
+  afterEach(() => {
     $httpBackend.verifyNoOutstandingExpectation();
     $httpBackend.verifyNoOutstandingRequest();
   });

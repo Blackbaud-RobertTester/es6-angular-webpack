@@ -18,7 +18,8 @@
   },
   "homepage": "https://github.com/digitalbs/es6-angular-webpack",
   "dependencies": {
-    "angular-jwt": "0.0.9"
+    "angular-jwt": "0.0.9",
+    "gulp-open": "^1.0.0"
   },
   "devDependencies": {
     "angular": "^1.4.4",

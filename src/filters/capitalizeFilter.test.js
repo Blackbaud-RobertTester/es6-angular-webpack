@@ -1,12 +1,12 @@
 import '../filters';
 
-describe('Filter: Capitalize', function () {
+describe('Filter: Capitalize', () => {
   var text;
 
-  beforeEach(function () {
+  beforeEach(() => {
     angular.mock.module('app.filters');
 
-    inject(function ($filter) {
+    inject($filter => {
       text = $filter('capitalize');
     });
   });
@@ -20,8 +20,8 @@ describe('Filter: Capitalize', function () {
   textMatrix.push(createExpectation('12345', '12345'));
   textMatrix.push(createExpectation(' ', ' '));
 
-  describeEach(' will update ', textMatrix, function (expectObj) {
-    it('the text "' + expectObj.given + '" so that the first letter of each word is capitalized', function () {
+  describeEach(' will update ', textMatrix, expectObj => {
+    it('the text "' + expectObj.given + '" so that the first letter of each word is capitalized', () => {
       expect(text(expectObj.given)).toBe(expectObj.expected);
     });
   });

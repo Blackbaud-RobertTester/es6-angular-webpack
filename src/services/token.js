@@ -24,11 +24,11 @@ var tokenService = function ($cookies, $interval, jwtHelper, API_URL, $http) {
       token.renewing = true;
       $http.post(API_URL + '/token', '', {
         authorization: 'bearer ' + $cookies.get('token')
-      }).success(function (newToken) {
+      }).success(newToken => {
         $cookies.put('token', newToken);
         token.renewing = false;
         token.isExpiring = false;
-      }).error(function () {
+      }).error(() => {
         token.renewing = false;
       });
     }

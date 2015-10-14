@@ -12,21 +12,4 @@ module.exports = function (paths, plugins) {
       configFile: appRoot + '/karma.conf.js'
     }, cb).start();
   });
-
-  gulp.task('karma:ci', function (cb) {
-    new karmaServer({
-      configFile: appRoot + '/karma.conf.js',
-      singleRun: true,
-      reporters: ['progress', 'junit', 'coverage'],
-      junitReporter: {
-        outputDir: process.env.CIRCLE_TEST_REPORTS,
-        outputFile: 'karma/junit.xml',
-        suite: 'karma'
-      },
-      coverageReporter: {
-        type: 'html',
-        dir: path.join(process.env.CIRCLE_ARTIFACTS, 'coverage')
-      }
-    }, cb).start();
-  });
 };

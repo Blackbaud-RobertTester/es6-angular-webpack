@@ -1,7 +1,7 @@
 import token from './token';
 import 'angular-jwt';
 
-let servicesModule = angular.module('hcsutil.services', ['angular-jwt']);
+let servicesModule = angular.module('app.services', ['angular-jwt']);
 
 servicesModule.service('token', token);
 
